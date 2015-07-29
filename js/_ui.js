@@ -1,4 +1,4 @@
-﻿var ui = ui || {};
+﻿var ui_version = '0.002';
 var ui = {
     ajax: function (url, fn, type, data, datatype, args) {
         //
@@ -11,12 +11,12 @@ var ui = {
         }
         //
         if (data == undefined || data == "") {
-            data = { 'token': ui.security.token() };
+            data = {};
         } else {
             if (typeof data == 'string') { data = $(data).serializeArray(); };
             var _data = {};
             $.each(data, function (k, v) {
-                if (v.name != undefined) { k = v.name; v = v.value; }
+                if (v && v.name != undefined) { k = v.name; v = v.value; }
                 if (k.indexOf('[]') != -1) {
                     if (_data[k] == undefined) { _data[k] = []; }
                     _data[k].push(v);
@@ -24,8 +24,12 @@ var ui = {
                     _data[k] = v;
                 };
             });
-            data = ui.security.params(_data);
+            data = _data;
         };
+        //
+        if (ui.header != undefined) {
+            data.publicUserId = ui.header.g.userid;
+        }
         //
         if (datatype == undefined || datatype == "") {
             datatype = 'json';
@@ -60,6 +64,10 @@ var ui = {
             contentType: g.contentType,
             success: function (data) {
                 //
+                if (typeof data == "object" && data.logoutFlag && data.success == false) {
+                    window.location.href = '/?logoutFlag=true';
+                }
+                //
                 if (g.ajaxloading) { ui.ajaxloading.hide(); }
                 //
                 if (g.cachekey != '') {
@@ -69,7 +77,15 @@ var ui = {
                 }
                 fn(data);
             },
-            error: function (a, b, c) { alert("ajax error: " + b + "," + c); }
+            error: function (a, b, c) {
+                if (a.status == 0) {
+                    window.location.reload();
+                } else {
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                }
+            }
         });
     },
     ajaxloading: {
@@ -83,16 +99,16 @@ var ui = {
     require: {
         g: {},
         config: {
-            //前缀下划线表示组件module
-            _registerlogin: ['/css/_register.login.css', '/js/_register.login.js'],
-            //没有前缀下划线的表示插件plugin
-            aui: ['/js/plugin/aui/aui.css', '/js/plugin/aui/aui.js'],
-            datepicker: ['/js/plugin/datepicker/wdatepicker.js'],
-            isotope: ['/js/plugin/isotope/isotope.v2.min.js'],
-            flotpie: ['/js/plugin/flot/jquery.flot.pie.min.js'],
-            kindeditor: ['/js/plugin/kindeditor/kindeditor.aui.js'],
-            mousewheel: ['/js/plugin/mousewheel.js'],
-            swiper: ['/js/plugin/swiper/swiper.css', '/js/plugin/swiper/swiper.min.js']
+            "_contentType": ['/wx/js/_contentType.js?' + ui_version],//_组件
+            "aui": ['/js/plugin/aui/aui.css?' + ui_version, '/js/plugin/aui/aui.js?' + ui_version],
+            "datepicker": ['/js/plugin/datepicker/wdatepicker.js?' + ui_version],
+            "emoji": ['/js/plugin/emoji/emoji.css?' + ui_version, '/js/plugin/emoji/emoji.js?' + ui_version],
+            "boostrapswitch": ['/js/plugin/boostrap/switch.css?' + ui_version, '/js/plugin/boostrap/switch.js?' + ui_version],
+            "editor": ['/js/plugin/ueditor/ueditor.config.aui.js?' + ui_version],
+            "mousewheel": ['/js/plugin/mousewheel.js?' + ui_version],
+            "swiper": ['/js/plugin/swiper/swiper.min.css?' + ui_version, '/js/plugin/swiper/swiper.min.js?' + ui_version],
+            "uploadify": ['/js/plugin/uploadify/uploadify.css?' + ui_version, '/js/plugin/uploadify/jquery.uploadify.min.js?' + ui_version],
+            "zclip": ['/js/plugin/zclip/jquery.zclip.js?' + ui_version]
         },
         key: function (keys, fn) {
             if (fn == undefined) {
@@ -145,10 +161,10 @@ var ui = {
             link.rel = 'stylesheet';
             link.href = url;
             link.onload = function () {
-                ui.require.config[key].finished++;
                 ui.require._callback(key, keys);
             };
             head.appendChild(link);
+            ui.require.config[key].finished++;
         },
         _js: function (url, key, keys) {
             $.ajax({
@@ -160,8 +176,7 @@ var ui = {
                 success: function () {
                     ui.require.config[key].finished++;
                     ui.require._callback(key, keys);
-                },
-                error: function (a, b, c) { alert("ui require error " + b + " " + c); }
+                }
             });
         },
         _callback: function (key, keys) {
@@ -185,84 +200,7 @@ var ui = {
                         this.g[_keys] = true;
                     }
                 }
-
             }
-        }
-    },
-    security: {
-        token: function () {
-            var a = 'def0!l=k+ghijab.ycz1op89(){vwx45qrstu7623mn}';
-            var args = token.split('&');
-            for (var i = args.length; i--; ) {
-                var tmp = args[i].split('@');
-                window['token_' + tmp[0]] = tmp[1];
-            }
-            var z = token_z;
-            var f = token_f;
-            var kv = {};
-            for (var i = a.length; i--; ) {
-                var k = a.charAt(i);
-                var v = z.charAt(i);
-                kv[v] = k;
-            }
-            var fn = '';
-            for (var i = 0; i < f.length; i++) {
-                var c = f.charAt(i);
-                if (kv[c] == undefined) {
-                    fn += c;
-                } else {
-                    fn += kv[c];
-                }
-            }
-            return eval('(' + fn + ')()');
-        },
-        params: function (data) {
-            var kv = ui.security._kv();
-            var rt = { "token": ui.security.token() };
-            if (typeof data == "object") {
-                for (var k in data) {
-                    var key = ui.security._recursive(k, kv);
-                    rt[key] = ui.security._recursive(data[k], kv);
-                }
-            }
-            if (typeof data == "string") {
-                rt = ui.security._recursive(data, kv);
-            };
-            return rt;
-        },
-        _kv: function () {
-            var index = { '0000': '0', '1000': '1', '0001': '2', '0010': '3', '1111': '4', '0011': '5', '0101': '6', '0100': '7', '0110': '8', '0111': '9' };
-            var arr = [];
-            for (var i = 0; i < 11; i++) {
-                var b = 4 * i;
-                var c = ui.security.token().substr(b, 4);
-                arr.push(index[c]);
-            };
-            arr.splice(11, 0, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-            arr = ui.tool.array.del_duplicate(arr);
-            var t = ui.tool.array.per_char('abcdefghijklmnopqrstuvwxyz');
-            var a = arr.concat(t);
-            var z = ui.tool.array.per_char('1c450abgr67hi23mntuvw9sxopqjkldef8yz');
-            var kv = {};
-            for (var i = a.length; i--; ) {
-                var k = a[i];
-                var v = z[i];
-                kv[v] = k;
-            };
-            return kv;
-        },
-        _recursive: function (str, _kv) {
-            var _v = '';
-            str = str.toString();
-            for (var i = 0; i < str.length; i++) {
-                var c = str.charAt(i);
-                if (_kv[c] == undefined) {
-                    _v += c;
-                } else {
-                    _v += _kv[c];
-                }
-            };
-            return _v;
         }
     },
     tool: {
@@ -270,7 +208,7 @@ var ui = {
             per_char: function (str) {
                 str = str.replace(/\s*/g, '');
                 var rt = [];
-                for (var i = str.length; i--; ) {
+                for (var i = 0, ii = str.length; i < ii; i++) {
                     rt[i] = str.charAt(i);
                 }
                 return rt;
@@ -330,6 +268,9 @@ var ui = {
                     }
                 };
                 return rt;
+            },
+            get_kv: function (kv, arr) {
+                return ui.tool.array.get_ones(kv, arr)[0];
             }
         },
         cookie: {
@@ -441,12 +382,12 @@ var ui = {
                 $.extend(g, args);
                 if (g.val == "current") {
                     g.val = window.location.pathname + window.location.search;
-                    g.val = g.val.indexOf('.') == -1 ? g.val + "index.php" : g.val;
+                    g.val = g.val.indexOf('.') == -1 ? g.val + "index.jsp" : g.val;
                 };
                 var finded = false;
                 $(g.target).find(g.tag).each(function () {
                     var a = $(this).attr(g.attr);
-                    a = a == '/' ? "/index.php" : a;
+                    a = a == '/' ? "/index.jsp" : a;
                     var rt = -1;
                     switch (g.type) {
                         case '<': rt = g.val.indexOf(a); break;
@@ -550,18 +491,42 @@ var ui = {
                 }
                 return format;
             }
+        },
+        radio: {
+            toggle: function (target) {
+                $(target).find('input:radio').each(function () {
+                    var name = $(this).attr('name');
+                    var parent = $(this).closest('.J_radio_toggle_c');
+                    var checked = parent.find('input:radio[name="' + name + '"]:checked').val();
+                    parent.data('value', checked);
+                    $(this).click(function () {
+                        var val = $(this).val();
+                        //
+                        var value = parent.data('value');
+                        //
+                        if (val == value) {
+                            parent.data('value', '');
+                            $(this).prop('checked', false);
+                        } else {
+                            parent.data('value', val);
+                        }
+                    })
+                });
+
+            }
         }
     },
     twinkle: function (args) {
         var g = {
             target: '',
-            time: 350,
-            times: 3,
+            time: 1200,
+            times: 6,
             cls: 'twinkle'
         }
         $.extend(g, args);
         $(g.target).addClass(g.cls);
         var i = 0;
+        var intervalTime = Math.ceil(g.time / g.times);
         var intervalId = setInterval(function () {
             (function () {
                 if (i % 2 == 0) {
@@ -575,6 +540,6 @@ var ui = {
                 };
                 i++;
             })(i, g);
-        }, g.time);
+        }, intervalTime);
     }
 };
