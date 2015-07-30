@@ -32,7 +32,7 @@ ui.ajax = function (url, fn, type, data, datatype, args) {
             key: '',
             minute: 5
         },
-        loading: '#J_ui_ajax_loading'
+        loading: true
     }
     $.extend(g, args);
     if (g.cache.key) {
@@ -77,8 +77,8 @@ ui.ajax = function (url, fn, type, data, datatype, args) {
     });
 };
 ui.ajax.loading = function (target, show) {
-    var target = $(target);
-    if (target.length == 0) { return false; };
+    target = target === true ? $('#J_ui_ajax_loading') : $(target);
+    if (!target.length) { return false; };
     //
     var queue = target.data('queue');
     if (show) {
@@ -92,3 +92,95 @@ ui.ajax.loading = function (target, show) {
     }
     target.data('queue', queue);
 };
+ui.require = function (keys, fn) {
+    keys = typeof keys == 'string' ? keys.split(',') : keys;
+    fn = !fn ? function () { } : fn;
+    ui.require.g = !ui.require.g ? {} : ui.require.g;
+    //
+    var _keys = keys.join('');
+    if (ui.require.g[_keys] === true) {
+        return fn();
+    };
+    if (!ui.require.g[_keys]) {
+        ui.require.g[_keys] = [fn];
+    } else {
+        ui.require.g[_keys].push(fn);
+    };
+    for (var i = 0, ii = keys.length; i < ii; i++) {
+        ui.require.key(keys[i], keys);
+    }
+};
+ui.require.key = function (key, keys) {
+    if (this.config[key] === true) {
+        this.fn(key, keys);
+    } else if (this.config[key].finished && this.config[key].finished <= this.config[key].length) {
+        setTimeout(function () {
+            ui.require.key(key, keys);
+        }, 500);
+    } else {
+        //
+        ui.ajax.loading(true, true);
+        //
+        this.config[key].finished = 0;
+        for (var i = 0, ii = this.config[key].length; i < ii; i++) {
+            var url = ui.require.config[key][i];
+            if (url.indexOf('.css') != -1) {
+                this.css(url, key, keys);
+            };
+            if (url.indexOf('.js') != -1) {
+                this.js(url, key, keys);
+            };
+        }
+    };
+};
+ui.require.css = function (url, key, keys) {
+    var head = document.getElementsByTagName('head')[0];
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    link.onload = function () {
+        ui.require.fn(key, keys);
+    };
+    head.appendChild(link);
+    //
+    this.config[key].finished++;
+};
+ui.require.js = function (url, key, keys) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "script",
+        cache: true,
+        async: true,
+        success: function () {
+            ui.require.config[key].finished++;
+            ui.require.fn(key, keys);
+        }
+    });
+};
+ui.require.fn = function (key, keys) {
+    if (!key || this.config[key].finished < this.config[key].length) {
+        return false;
+    };
+    this.config[key] = true;
+    //
+    var finished = true;
+    for (var i = 0, ii = keys.length; i < ii; i++) {
+        key = keys[i];
+        if (this.config[key] !== true) {
+            finished = false;
+        };
+    };
+    if (finished === true) {
+        ui.ajax.loading(true, false);
+        //
+        var _keys = keys.join('');
+        if (this.g[_keys].length) {
+            for (var i = 0, ii = this.g[_keys].length; i < ii; i++) {
+                this.g[_keys][i]();
+            };
+            this.g[_keys] = true;
+        }
+    }
+};
+ui.require.config = {};
