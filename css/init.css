@@ -1,0 +1,65 @@
+﻿/* initial css */
+
+/* a */
+.active-cG{ color: #333; }
+/* b */
+/* btn */
+.btn-white { border: 1px solid #A1A1A1; background-color: #fff; color: #808080; border-radius: 5px; cursor: pointer; }
+.btn-white:hover { background-color: #f4f4f4; color: #333; }
+.btn-gray { border: 1px solid #A1A1A1; background-color: #DBDBDB; color: #808080; border-radius: 5px; cursor: pointer; }
+.btn-gray:hover { background-color: #C5C5C5; color: #333; }
+.btn-red { border: 1px solid #D85050; background-color: #FFEDED; color: #D55E5E; border-radius: 5px; cursor: pointer; }
+.btn-red:hover { background-color: #FFE1E1; color: #E18E8E; }
+.btn-green { border: 1px solid #317E49; background-color: #3C9157; color: #fff; border-radius: 5px; cursor: pointer; }
+.btn-green:hover { background-color: #44A664; color: #fff; }
+
+/* border */
+
+/* c */
+/* cover */
+.cover { position: fixed; top: 0px; right: 0px; bottom: 0px; left: 0px; z-index: 9999; background-color: #000; filter: alpha(opacity=50); opacity: 0.5; }
+@media (max-width: 768px) {
+    .cover { overflow: scroll; }
+}
+/* d */
+/* e */
+/* f */
+
+/* g */
+
+/* h */
+.hover-ul:hover { text-decoration: underline; }
+.hover-bY:hover { border-color: #f86400; }
+.hover-bgW:hover { background-color: #fff; }
+.hover-cG:hover { color: #333; }
+.hover-cW-bgB:hover { text-decoration: none; color: #fff; background-color: #3399FF; }
+.hover-bY-shadow10:hover { box-shadow: 0 0 10px rgba(245, 120, 120, .8); }
+/* i */
+/* icons */
+
+/* j */
+/* k */
+/* l */
+
+/* m */
+/* n */
+
+/* o */
+/* p */
+
+
+/* q */
+/* r */
+
+/* s */
+/* t */
+
+/* u */
+
+/* v */
+
+/* w */
+/* x */
+/* y */
+/* z */
+

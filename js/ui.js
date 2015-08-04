@@ -1,4 +1,4 @@
-﻿/* partial ui function is based on jQuery */
+﻿/* ui plugin based on jQuery */
 ui = function () { };
 ui.ajax = function (url, fn, type, data, datatype, args) {
     //
@@ -332,7 +332,7 @@ ui.json = {
 };
 ui.location = {
     search: function (str) {
-        var search = str == undefined ? window.location.search : str.split('?').pop();
+        var search = !str ? window.location.search : str.split('?').pop();
         if (search == "") { return ""; };
 
         var p = search.substring(1);
@@ -347,7 +347,7 @@ ui.location = {
         };
         j += '}';
         var json = eval('(' + j + ')');
-        if (typeof json.fr != 'undefined') {
+        if (json.fr) {
             json.fr = json.fr.replace(/_and_/g, '&')
         }
         return json;
@@ -491,6 +491,5 @@ ui.radio = {
                 }
             })
         });
-
     }
 }
