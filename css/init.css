@@ -1,4 +1,7 @@
-﻿/* initial css */
+﻿/* reset parent base css */
+
+/* ----beauty dividing line----- */
+/* initial element style css,like active btn icon img hover etc */
 
 /* a */
 .active-cG{ color: #333; }
@@ -21,6 +24,9 @@
 @media (max-width: 768px) {
     .cover { overflow: scroll; }
 }
+.cover-ajax-loading-c { display:none; position: fixed; top: 0px; right: 0px; bottom: 0px; left: 0px; z-index: 10000; background-color: rgba(0, 0, 0, 0.5); background-color: #555\9; }
+.cover-ajax-loading { position: absolute; top: 50%; left: 50%; margin-top: -15px; margin-left: -110px; width: 200px; height: 30px; background-image: url('img/loading.gif'); background-repeat: no-repeat; background-position: center center; }
+
 /* d */
 /* e */
 /* f */
@@ -36,6 +42,30 @@
 .hover-bY-shadow10:hover { box-shadow: 0 0 10px rgba(245, 120, 120, .8); }
 /* i */
 /* icons */
+.icon-20 
+{ display: inline-block; width: 20px; height: 20px; background-image: url('img/icon-20.png'); background-repeat: no-repeat; background-position: 0px 0px; vertical-align: middle; }
+
+.i-edit-20, .icon-20-active .i-edit-20:hover { background-position: 0 0; }
+.i-edit-20:hover, .i-edit-a:hover .i-edit-20, .icon-20-active .i-edit-20 { background-position-y: -20px; }
+
+.i-del-20, .icon-20-active .i-del-20:hover { background-position: -40px 0; }
+.i-del-20:hover, .i-del-a:hover .i-del-20 { background-position-y: -20px; }
+
+.i-add-20, .icon-20-active .i-add-20:hover { background-position: -220px 0; }
+.i-add-20:hover, .i-add-a:hover .i-add-20, .icon-20-active .i-add-20 { background-position-y: -20px; }
+
+.icon-30
+{ display: inline-block; width: 30px; height: 30px; background-image: url('img/icon-30.png'); background-repeat: no-repeat; background-position: 0px 0px; vertical-align: middle; }
+.i-del-30 { background-position: 0 0; }
+.i-del-30:hover, .i-del-a:hover .i-del-30 { background-position-y: -30px; }
+
+.i-back-30 { background-position: -30px -30px; }
+.i-back-30:hover, .i-back-a:hover .i-back-30 { background-position-y: 0; }
+
+.img-25
+{ display: inline-block; background-image: url('img/img-25.png'); background-repeat: no-repeat; background-position: 0px 0px; vertical-align: middle; }
+.img-lock-25 { background-position: 0 0; width: 25px; height: 30px; }
+.img-unlock-25 { background-position: 0 -30px; width: 25px; height: 30px; }
 
 /* j */
 /* k */
@@ -63,3 +93,72 @@
 /* y */
 /* z */
 
+/* ----beauty dividing line----- */
+/* page common part css */
+
+/* a */
+/* b */
+/* body */
+.body-c { overflow: hidden; }
+
+/* c */
+
+/* d */
+/* e */
+/* f */
+/* footer */
+.footer { padding: 20px 0 20px 12%;  }
+.footer-logo {  }
+.footer-legal { padding: 30px 0 30px 12%; text-align: center; line-height: 22px; }
+@media (max-width: 1080px) {
+
+}
+@media (max-width: 640px) {
+    .footer-logo { }
+    .footer-legal { padding: 0 0 30px 0; }
+}
+
+/* g */
+/* h */
+.header { }
+.header-logo { }
+.header-user-photo { }
+.header-user-name { }
+.header-user-status { }
+.header-user-type { }
+.header-user-quit { }
+.header-user-quit:hover { }
+
+
+/* i */
+
+/* j */
+/* k */
+/* l */
+/* m */
+/* menu */
+.menu-c { width: 100%; border: 1px solid #C5C5C5; box-shadow: 3px 0 15px rgba(0, 0, 0, .3); }
+.menu-caption { font-size: 14px; padding-left: 10%; color: #AAA9A9; line-height: 47px; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #C5C5C5; }
+.menu-list { font-size: 14px; padding-top: 14px; padding-bottom: 10px; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #C5C5C5;  }
+.menu-list:last-child { border: none; }
+.menu-first, .menu-first-hoverN { padding-left: 25%; padding-top: 10px; padding-bottom: 10px; }
+.menu-first:hover { background-color: #F0F0F0; color: #333; }
+.menu-first-active, .menu-first-active:hover { background-color: #5EB0A1; color: #fff; }
+/* n */
+/* o */
+/* p */
+
+/* q */
+/* r */
+/* s */
+/* t */
+
+/* u */
+
+/* v */
+/* w */
+/* x */
+/* y */
+/* z */
+
+/* ----beauty dividing line----- */
