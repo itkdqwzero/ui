@@ -49,7 +49,7 @@ ui.isEmpty = function (obj) {
     };
     return ui.json.keys(obj).length === 0;
 };
-ui.isEqual = function () {
+ui.isEqual = function (a, b) {
     return ui.isEqual._eq(a, b);
 }
 ui.isEqual._eq = function (a, b, aStack, bStack) {

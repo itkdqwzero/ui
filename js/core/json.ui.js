@@ -15,8 +15,13 @@
         return keys;
     },
     has: function (obj, key) {
-        return obj != null && hasOwnProperty.call(obj, key);
+        return hasOwnProperty.call(obj, key);
     },
+
+
+
+
+
     get_one: function (kv, json) {
         for (var k in kv) {
             for (var i in json) {
