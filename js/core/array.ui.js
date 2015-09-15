@@ -1,31 +1,38 @@
-﻿ui.array = {
+﻿//ui.array工具类操作数组对象，所有操作均不对原数组进行修改，均返回一个结果
+ui.array = {
+    //返回数组：复制数组,不同于obj.slice(),此方法会删除null值，并重新排列下标
     clone: function (obj) {
         var rt = [];
         for (var i in obj) {
-            if (!ui.isNull(obj[i])) {
-                if (ui.isArray(obj[i])) {
-                    obj[i] = ui.array.clone(obj[i]);
+            var k = obj[i];
+            if (!ui.isNull(k)) {
+                if (ui.isArray(k)) {
+                    k = ui.array.clone(k);
                 }
-                rt.push(obj[i]);
+                rt.push(k);
             };
         }
         return rt;
     },
+    //返回元素：数组的第一个元素
     first: function (obj) {
         return obj.slice().shift();
     },
+    //返回元素：数组的最后一个元素
     last: function (obj) {
         return obj.slice().pop();
     },
+    //返回数组：遍历数组执行回调函数fn(index,value)
     map: function (obj, fn) {
         var rt = [];
         var k = 0;
         for (var i in obj) {
-            rt[k] = fn(obj[i]);
+            rt[k] = fn(i, obj[i]);
             k++;
         }
         return rt;
     },
+    //返回数组：删除数组中某个元素，该元素通常是string/number，也支持删除对象array/json/function
     del: function (obj, val) {
         if (ui.isArray(val)) {
             var clone = ui.array.clone(obj);
@@ -42,6 +49,7 @@
         };
         return rt;
     },
+    //返回数组：去除数组中重复的元素
     uniq: function (obj) {
         var clone = ui.array.clone(obj);
         for (var k in clone) {
@@ -55,6 +63,7 @@
         };
         return clone;
     },
+    //返回下标：数组中某个元素的下标，不存在返回-1
     index: function (obj, val) {
         for (var i in obj) {
             if (ui.isEqual(obj[i], val)) {
@@ -63,9 +72,17 @@
         };
         return -1;
     },
+    //返回布尔：判断数组是否包含某个元素,返回true/false，此包含关系需要全等于
     has: function (obj, val) {
         return ui.array.index(obj, val) == -1 ? false : true;
     },
+    //返回数组：判断数组中每个元素是否包含了指定值(一个或多个元素），通常指定值为array/json，也支持查找string/number
+    //此包含关系不需要全等于，例如 var obj = ["a","ab",["a","ab"],["b","abc"],{"a":"ab"},{"a":"ab","b":"abc"}];
+    //  ui.array.contain(obj,{"a":"ab"}) --> [{"a":"ab"},{"a":"ab","b":"abc"}]
+    //  ui.array.contain(obj,{"a":"ab","b":"ab"}) --> []
+    //  ui.array.contain(obj,["ab","a"]) --> [["a","ab"]]
+    //  ui.array.contain(obj,["ab","b"]) --> []
+    //  ui.array.contain(obj,"ab") --> ["ab",["a","ab"]]
     contain: function (obj, val) {
         var rt = [];
         var type = ui.isArray(val) ? 'array' : ui.isJson(val) ? 'json' : '';
@@ -94,20 +111,13 @@
                 }
             } else {
                 a = ui.isEqual(obj[i], val);
-            }
+            };
             if (a) {
                 rt.push(obj[i]);
             }
         }
         return rt;
-    },
-    one: function (obj, val) {
-        return ui.array.contain(obj, val)[0];
-    },
-
-
-
-    
+    }
 };
 //常用的Array原生方法
 // concat(a,b,c,...,n) 合并一个或多个元素，返回新数组

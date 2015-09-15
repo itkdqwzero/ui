@@ -14,7 +14,7 @@ ui.isDate = function (obj) {
     return toString.call(obj) === '[object Date]';
 };
 //
-_.isElement = function (obj) {
+ui.isElement = function (obj) {
     return !!(obj && obj.nodeType === 1);
 };
 //
@@ -26,7 +26,7 @@ ui.isObject = function (obj) {
     return type === 'function' || type === 'object' && !!obj;
 };
 ui.isJson = function (obj) {
-    return typeof obj === 'object' && !!obj && !obj.length;
+    return typeof (obj) == "object" && toString.call(obj) == "[object Object]" && !obj.length;
 };
 //
 ui.isFinite = function (obj) {
@@ -35,7 +35,7 @@ ui.isFinite = function (obj) {
 ui.isNaN = function (obj) {
     return ui.isNumber(obj) && isNaN(obj);
 };
-_.isBoolean = function (obj) {
+ui.isBoolean = function (obj) {
     return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
 };
 ui.isNull = function (obj) {
@@ -43,11 +43,10 @@ ui.isNull = function (obj) {
 };
 //
 ui.isEmpty = function (obj) {
-    if (obj == null) { return true; };
-    if (_.isArray(obj) || _.isString(obj)) {
-        return obj.length === 0;
-    };
-    return ui.json.keys(obj).length === 0;
+    if (ui.isNull(obj) || ui.isNaN(obj)) { return true; };
+    if (ui.isArray(obj) || ui.isString(obj)) { return obj.length === 0; };
+    if (ui.isJson(obj)) { return ui.json.keys(obj).length === 0; };
+    return false;
 };
 ui.isEqual = function (a, b) {
     return ui.isEqual._eq(a, b);

@@ -8,31 +8,19 @@
 var ui = function () { };
 ui.version = '1.0';
 
+//发布时可以将以下文件打包，打包的先后顺序不做要求
 //
-//开发者模式，发布时可以将以下文件打包在一起（先后顺序不做要求）
-$(function () {
-    var uncompressed = [
-    //核心功能
-        'js/core/is.ui.js',
-        'js/core/require.ui.js',
-    //基础工具
-        'js/core/array.ui.js',
-        'js/core/cookie.ui.js',
-        'js/core/json.ui.js',
-        'js/core/location.ui.js',
-        'js/core/number.ui.js',
-        'js/core/string.ui.js',
-        'js/core/time.ui.js',
-    //jQuery扩展
-        'js/core/ajax.ui.js'        
-    ];
-    for (var i in uncompressed) {
-        var script = document.createElement('script');
-        script.src = uncompressed[i];
-        script.type = 'text/javascript';
-        script.onload = function () {
-            console.log('load ' + this.src + ' success');
-        };
-        document.head.appendChild(script);
-    }
-});
+//    //核心功能
+//    'js/core/is.ui.js',
+//    'js/core/require.ui.js',
+//    //基础工具
+//    'js/core/array.ui.js',
+//    'js/core/cookie.ui.js',
+//    'js/core/json.ui.js',
+//    'js/core/location.ui.js',
+//    'js/core/number.ui.js',
+//    'js/core/string.ui.js',
+//    'js/core/time.ui.js',
+//    //jQuery扩展
+//    'js/core/ajax.ui.js'        
+//

@@ -1,4 +1,7 @@
 ﻿ui.json = {
+    key:function(obj){
+        
+    },
     keys: function (obj) {
         if (!ui.isObject(obj)) {
             return [];
@@ -14,11 +17,9 @@
         };
         return keys;
     },
-    has: function (obj, key) {
-        return hasOwnProperty.call(obj, key);
+    has: function (obj, kv) {
+        return hasOwnProperty.call(obj, val);
     },
-
-
 
 
 
@@ -63,3 +64,27 @@
         return json;
     }
 };
+//常用的JSON原生方法
+// hasOwnProperty()
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
