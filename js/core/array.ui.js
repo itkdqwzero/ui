@@ -4,12 +4,16 @@ ui.array = {
     clone: function (obj) {
         var rt = [];
         for (var i in obj) {
-            var k = obj[i];
+            var a, k = obj[i];
             if (!ui.isNull(k)) {
                 if (ui.isArray(k)) {
-                    k = ui.array.clone(k);
+                    a = ui.array.clone(k);
+                } else if (ui.isJson(k)) {
+                    a = ui.json.clone(k);
+                } else {
+                    a = k;
                 }
-                rt.push(k);
+                rt.push(a);
             };
         }
         return rt;

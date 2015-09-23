@@ -1,6 +1,17 @@
 ﻿ui.json = {
-    key:function(obj){
-        
+    clone: function (obj) {
+        var rt = {};
+        for (var i in obj) {
+            var a = obj[i];
+            if (ui.isJson(a)) {
+                rt[i] = ui.json.clone(a);
+            } else if (ui.isArray(a)) {
+                rt[i] = ui.array.clone(a);
+            } else {
+                rt[i] = a;
+            };
+        };
+        return rt;
     },
     keys: function (obj) {
         if (!ui.isObject(obj)) {
@@ -17,9 +28,10 @@
         };
         return keys;
     },
-    has: function (obj, kv) {
-        return hasOwnProperty.call(obj, val);
+    has: function (obj, key) {
+        return obj != null && hasOwnProperty.call(obj, key);
     },
+    contain: function (obj, val) { }
 
 
 
