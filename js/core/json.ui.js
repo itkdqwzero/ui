@@ -31,7 +31,7 @@
     has: function (obj, key) {
         return obj != null && hasOwnProperty.call(obj, key);
     },
-    contain: function (obj, val) { }
+    contain: function (obj, val) { },
 
 
 

@@ -2,7 +2,7 @@
 * 异步加载插件，含js和css文件，不依赖jQuery，效果如同预先在head中加载script和link文件
 * 固定调用的数据依赖于配置空间ui.config，如下格式都可以
 *   ui.config={"array":["js/core/array.css","js/core/array.js"],"json":["js/core/json.js"],"number":"js/core/number.js"};
-* ui.require(keys,fn)加载指定keys的插件组合，keys为Array，亦可为String用空格隔开，也可以直接配置请求
+* ui.require(keys,fn)加载指定keys的插件组合，keys为Array，亦可为String用空格隔开，也可以传进新的配置对象Json去请求
 *   如 ui.require(["array","json","number"],fn)
 *   或 ui.require("array json number",fn)
 *   或 ui.require({"array":["js/core/array.css","js/core/array.js"],"json":["js/core/json.js"],"number":"js/core/number.js"},fn)
@@ -23,7 +23,8 @@ ui.require = function (keys, fn) {
     };
     fn = !fn ? function () { } : fn;
     //
-    var _keys = keys.join('');
+    console.log(keys);
+    var _keys = keys.join('_');
     if (ui.require.g[_keys] === true) {
         return fn();
     };
@@ -44,11 +45,11 @@ ui.require._key = function (key, keys) {
         return false;
     }
     if (ui.config[key] === true) {
-        this.fn(key, keys);
+        this._fn(key, keys);
     } else if (ui.config[key].done && ui.config[key].done <= ui.config[key].length) {
         setTimeout(function () {
             ui.require._key(key, keys);
-        }, 300);
+        }, 100);
     } else {
         //
         ui.ajax.loading(true, true);
@@ -66,6 +67,9 @@ ui.require._key = function (key, keys) {
                 if (url.indexOf('.js') != -1) {
                     this._js(url, key, keys);
                 };
+            } else {
+                ui.config[key].done++;
+                ui.require._fn(key, keys);
             }
         }
     };
@@ -78,19 +82,18 @@ ui.require._css = function (url, key, keys) {
         ui.require._fn(key, keys);
     };
     document.head.appendChild(link);
-    ui.require.g[url] = true;
-    //
     ui.config[key].done++;
+    ui.require.g[url] = true;
 };
 ui.require._js = function (url, key, keys) {
     var script = document.createElement('script');
     script.src = url;
     script.type = 'text/javascript';
     script.onload = function () {
-        ui.config[key].done++;
         ui.require._fn(key, keys);
     };
     document.head.appendChild(script);
+    ui.config[key].done++;
     ui.require.g[url] = true;
 };
 ui.require._fn = function (key, keys) {
@@ -109,7 +112,7 @@ ui.require._fn = function (key, keys) {
     if (done === true) {
         ui.ajax.loading(true, false);
         //
-        var _keys = keys.join('');
+        var _keys = keys.join('_');
         if (this.g[_keys].length) {
             for (var i = 0, ii = this.g[_keys].length; i < ii; i++) {
                 this.g[_keys][i]();

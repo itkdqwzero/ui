@@ -38,7 +38,7 @@
     };
     //
     var html = [
-    '<div class="f-h4 cGreen">测试is.ui.js</div>',
+    '<div class="f-h4 cGreen m20-t">测试is.ui.js</div>',
     '<div class="f13 lh20">',
     '<div>var data=<b>', data.valueOf().toString().replace(/\s/g, '').replace('function(){return', '').replace(';}', '').split(',').join(', '), ';</b></div>',
     '<div>run data[i]</div>',

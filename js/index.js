@@ -3,9 +3,9 @@
 $(function () {
     var uncompressed = [
     //核心功能
-        'js/core/is.ui.js',
         'js/core/require.ui.js',
     //基础工具
+        'js/core/is.ui.js',
         'js/core/array.ui.js',
         'js/core/cookie.ui.js',
         'js/core/json.ui.js',
@@ -14,7 +14,9 @@ $(function () {
         'js/core/string.ui.js',
         'js/core/time.ui.js',
     //jQuery扩展
-        'js/core/ajax.ui.js'
+        'js/core/ajax.ui.js',
+//        'js/core/dialog.ui.js',
+//        'js/core/mask.ui.js',
     ];
     for (var i in uncompressed) {
         var script = document.createElement('script');
@@ -38,8 +40,8 @@ $(function () {
 function load_test() {
     var testjs = [
     //核心功能
-      'js/test/is.ui.js',
-    //'js/test/require.ui.js',
+    //'js/test/is.ui.js',
+    'js/test/require.ui.js',
     //基础工具
     //'js/test/array.ui.js',
     //'js/test/cookie.ui.js',

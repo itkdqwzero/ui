@@ -11,9 +11,10 @@ ui.version = '1.0';
 //发布时可以将以下文件打包，打包的先后顺序不做要求
 //
 //    //核心功能
-//    'js/core/is.ui.js',
 //    'js/core/require.ui.js',
+
 //    //基础工具
+//    'js/core/is.ui.js',
 //    'js/core/array.ui.js',
 //    'js/core/cookie.ui.js',
 //    'js/core/json.ui.js',
@@ -21,6 +22,7 @@ ui.version = '1.0';
 //    'js/core/number.ui.js',
 //    'js/core/string.ui.js',
 //    'js/core/time.ui.js',
+
 //    //jQuery扩展
 //    'js/core/ajax.ui.js'        
 //

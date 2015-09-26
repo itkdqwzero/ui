@@ -678,6 +678,7 @@ body { font-family: 'microsoft yahei'; font-weight: 400; background-color: #fff;
 .tl { text-align: left; }
 .tr { text-align: right; }
 .ti-0 { text-indent: 0; }
+.ti-2em { text-indent: 2em; }
 .tt-up { text-transform: uppercase; }
 
 .toe { text-overflow: ellipsis; white-space: nowrap; }
