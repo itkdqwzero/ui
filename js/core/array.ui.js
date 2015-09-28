@@ -28,6 +28,8 @@ ui.array = {
     },
     //返回数组：遍历数组执行回调函数fn(index,value)
     map: function (obj, fn) {
+        if([].map&&fn)
+            return [].map.call(obj,function(value,index){return fn(index,value);});
         var rt = [];
         var k = 0;
         for (var i in obj) {
@@ -57,8 +59,8 @@ ui.array = {
     uniq: function (obj) {
         var clone = ui.array.clone(obj);
         for (var k in clone) {
-            for (var i = k + 1, ii = clone.length; i < ii; i++) {
-                if (!ui.isEqual(clone[i], clone[k])) {
+            for (var i = parseInt(k) + 1, ii = clone.length; i < ii; i++) {//在for in 中 k有可能变成字符串 因为for in 有时是用于遍历对象的
+                if (ui.isEqual(clone[i], clone[k])) {
                     clone.splice(i, 1);
                     i--;
                     ii--;
