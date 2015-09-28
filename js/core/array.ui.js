@@ -69,6 +69,67 @@ ui.array = {
         };
         return clone;
     },
+    /**
+     * 去除数组中的重复
+     * 效率更高的算法, 与uniq类似 , 多了纯数字数组的处理
+     * 字符串方面的比对没问题. 对象的比对, 不会比对两个对象是否完全一样,只比对是否是同一个引用
+     * @param	arrSource 	被处理数组
+     * @param	digital		若为true 则用纯数字的算法,能减少三倍用时 , 若数组中有对象, 则不能用此法
+     * @return  array 		返回处理后
+     */
+    unique:function(arrSource,digital){
+
+		if(!digital){//数组中包含对象或字符器的算法
+			var arrSource = ui.array.clone(arrSource);
+			var indexP=0,indexC=0;
+			var currentValue;
+			while(indexP<arrSource.length){
+				currentValue=arrSource[indexP++];
+				indexC=indexP;
+				while(indexC<arrSource.length){
+					if(arrSource[indexC]==currentValue ){
+						arrSource.splice(indexC,1);
+					}else
+						indexC++
+				}
+			}
+			return arrSource;
+		}
+		// else{
+		//	var result=[];
+		// 	var currentValue;
+		// 	var index=0;
+		// 	var currentLength=arrSource.length;
+		// 	var arrSource = ui.array.clone(arrSource).sort();
+		// 	while(currentLength){
+		// 		currentValue=arrSource[index];
+		// 		result.push(arrSource.shift());
+
+		// 		if(index<currentLength){
+		// 			while(currentValue==arrSource[index]){
+		// 				arrSource.shift();
+		// 			}
+		// 		}
+		// 		currentLength=arrSource.length;
+		// 	}
+		// }
+		else{//只有数字的算法
+			var result=[];
+			var currentValue;
+			var index=0,indexP=0,indexResult=0;
+			var arrSource = ui.array.clone(arrSource).sort();
+			while(indexP<arrSource.length){
+				currentValue=result[indexResult++]=arrSource[indexP++];
+				index=indexP;
+				if(index<arrSource.length){
+					while(currentValue==arrSource[index++]);
+					indexP=index;
+				}
+			}
+			return result;
+		}
+
+    },
     //返回下标：数组中某个元素的下标，不存在返回-1
     index: function (obj, val) {
         for (var i in obj) {
